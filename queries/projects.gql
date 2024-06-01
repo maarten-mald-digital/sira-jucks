@@ -1,0 +1,37 @@
+# Queries
+query GetProject($id: Int!) {
+	project(id: $id) {
+		id
+		title
+	}
+}
+
+query GetProjects {
+	projects {
+		id
+		title
+	}
+}
+
+# Mutations
+mutation CreateProject($input: CreateProjectInput!) {
+	createProject(input: $input) {
+		title
+	}
+}
+
+mutation UpdateProject($input: UpdateProjectInput!) {
+	updateProject(input: $input) {
+		id
+		title
+	}
+}
+
+mutation DeleteProject($input: DeleteProjectInput!) {
+	deleteProject(input: $input) {
+		id
+	}
+}
+
+# Types
+# Inputs

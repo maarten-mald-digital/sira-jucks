@@ -1,0 +1,7 @@
+a {
+	color: var(--black);
+
+	&:hover {
+		color: var(--primary);
+	}
+}

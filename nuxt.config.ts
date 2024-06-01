@@ -5,4 +5,13 @@ export default defineNuxtConfig({
 	css: ['~/assets/scss/app.scss'],
 
 	modules: ['nuxt-graphql-client'],
+
+	'graphql-client': {
+		clients: {
+			default: {
+				host: 'https://sira-jucks-api.test/graphql',
+				clientHost: 'https://sira-jucks-api.test/graphql',
+			},
+		},
+	},
 });

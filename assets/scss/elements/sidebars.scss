@@ -1,0 +1,11 @@
+.sidebar {
+	padding-left: 50px;
+	padding-right: 50px;
+	border-right: 1px solid grey;
+
+	.links {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+}
