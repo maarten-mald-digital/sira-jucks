@@ -3,6 +3,15 @@ query GetProject($id: Int!) {
 	project(id: $id) {
 		id
 		title
+		sprints {
+			id
+			title
+		}
+		tasks {
+			id
+			sprint_id
+			title
+		}
 	}
 }
 

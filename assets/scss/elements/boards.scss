@@ -1,0 +1,36 @@
+.boards {
+	&.kanban {
+		border: 3px solid grey;
+		padding: 20px;
+
+		.list {
+			padding: 40px 20px;
+			background-color: grey;
+			min-height: 100px;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+
+			.list-item {
+				background-color: white;
+				padding: 20px 10px;
+				border-radius: 10px;
+			}
+		}
+	}
+}
+
+.task-list {
+	padding: 40px 20px;
+	background-color: grey;
+	min-height: 100px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	.task-item {
+		background-color: white;
+		padding: 20px 10px;
+		border-radius: 10px;
+	}
+}
