@@ -86,11 +86,15 @@ const route = useRoute();
 const projectId = Number(route.params.id);
 const project = ref<any>(null);
 
+const lanes = ref<any>();
+
 await useAsyncGql({
 	operation: 'GetProject',
 	variables: { id: projectId },
 }).then((response) => {
 	project.value = response.data.value.project;
+
+	// lanes.value = project.value.sprints.map((sprint) => )
 });
 
 // Draggable test
@@ -105,35 +109,35 @@ interface Lane {
 	tasks: Task[];
 }
 
-const todoList = ref<Task[]>([
-	{ id: 1, title: 'Task 1' },
-	{ id: 2, title: 'Task 2' },
-	{ id: 3, title: 'Task 3' },
-]);
+// const todoList = ref<Task[]>([
+// 	{ id: 1, title: 'Task 1' },
+// 	{ id: 2, title: 'Task 2' },
+// 	{ id: 3, title: 'Task 3' },
+// ]);
 
-const doneList = ref<Task[]>([]);
+// const doneList = ref<Task[]>([]);
 
 // const board = ref<any[]>([{
 // 	lanes:
 // }]);
 
-const lanes = ref<Lane[]>([
-	{
-		id: 1,
-		title: 'to do',
-		tasks: [
-			{ id: 1, title: 'Task 1' },
-			{ id: 2, title: 'Task 2' },
-			{ id: 3, title: 'Task 3' },
-		],
-	},
-	{ id: 2, title: 'in progress', tasks: [{ id: 4, title: 'Task 4' }] },
-	{ id: 3, title: 'test', tasks: [] },
-	{ id: 4, title: 'done', tasks: [] },
-]);
+// const lanes = ref<Lane[]>([
+// 	{
+// 		id: 1,
+// 		title: 'to do',
+// 		tasks: [
+// 			{ id: 1, title: 'Task 1' },
+// 			{ id: 2, title: 'Task 2' },
+// 			{ id: 3, title: 'Task 3' },
+// 		],
+// 	},
+// 	{ id: 2, title: 'in progress', tasks: [{ id: 4, title: 'Task 4' }] },
+// 	{ id: 3, title: 'test', tasks: [] },
+// 	{ id: 4, title: 'done', tasks: [] },
+// ]);
 
-function onEnd(event: any) {
-	// Handle the end of drag-and-drop event if needed
-	console.log('Drag ended:', event);
-}
+// function onEnd(event: any) {
+// 	// Handle the end of drag-and-drop event if needed
+// 	console.log('Drag ended:', event);
+// }
 </script>

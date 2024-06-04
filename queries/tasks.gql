@@ -1,0 +1,48 @@
+# Queries
+# query GetProject($id: Int!) {
+# 	project(id: $id) {
+# 		id
+# 		title
+# 		sprints {
+# 			id
+# 			title
+# 		}
+# 		tasks {
+# 			id
+# 			sprint_id
+# 			title
+# 		}
+# 	}
+# }
+
+# query GetProjects {
+# 	projects {
+# 		id
+# 		title
+# 	}
+# }
+
+# Mutations
+# mutation CreateProject($input: CreateProjectInput!) {
+# 	createProject(input: $input) {
+# 		title
+# 	}
+# }
+
+mutation UpdateTask($input: UpdateTaskInput!) {
+	updateTask(input: $input) {
+		id
+		sprint_id
+		lane_id
+		title
+	}
+}
+
+# mutation DeleteProject($input: DeleteProjectInput!) {
+# 	deleteProject(input: $input) {
+# 		id
+# 	}
+# }
+
+# Types
+# Inputs

@@ -14,23 +14,27 @@
 					<hr />
 				</div>
 
-				<!-- <pre>{{ project }}</pre> -->
-				<!-- <pre>{{ sprints }}</pre> -->
-				<!-- <pre>{{ backlog }}</pre> -->
-
 				<div>
 					<!-- Sprints -->
-					<div class="sprint mt-3" v-for="sprint in sprints">
+					<div
+						class="sprint mt-3"
+						v-for="sprint in sprints"
+						:key="sprint.id"
+					>
 						<h3>{{ sprint.title }}</h3>
 						<draggable
 							v-model="sprint.tasks"
 							group="tasks"
 							class="task-list"
 							@end="onEnd"
-							itemKey="name"
+							itemKey="id"
+							:data-sprint-id="sprint.id"
 						>
 							<template #item="{ element, index }">
-								<div class="task-item">
+								<div
+									class="task-item"
+									:data-task-id="element.id"
+								>
 									{{ element.title }}
 								</div>
 							</template>
@@ -45,10 +49,14 @@
 							group="tasks"
 							class="task-list"
 							@end="onEnd"
-							itemKey="name"
+							itemKey="id"
+							data-sprint-id=""
 						>
 							<template #item="{ element, index }">
-								<div class="task-item">
+								<div
+									class="task-item"
+									:data-task-id="element.id"
+								>
 									{{ element.title }}
 								</div>
 							</template>
@@ -88,12 +96,34 @@ await useAsyncGql({
 	backlog.value = {
 		tasks: project.value.tasks.filter((task) => !task.sprint_id),
 	};
-
-	// console.log(sprints.value);
 });
 
 function onEnd(event: any) {
-	// Handle the end of drag-and-drop event if needed
-	console.log('Drag ended:', event);
+	const taskId = event.item.dataset.taskId;
+	const sprintId = event.to.dataset.sprintId;
+
+	console.log(`taskId: ${taskId}`);
+	console.log(`sprintId: ${sprintId}`);
+
+	updateProjectTask(taskId, sprintId);
+}
+
+async function updateProjectTask(taskId: any, sprintId: any) {
+	console.log('updateProjectTask');
+
+	await GqlUpdateTask({
+		input: {
+			id: taskId,
+			sprint_id: sprintId,
+		},
+	})
+		.then((response) => {
+			console.log('then()');
+			console.log(response);
+		})
+		.catch((error) => {
+			console.log('error()');
+			console.log(error);
+		});
 }
 </script>
