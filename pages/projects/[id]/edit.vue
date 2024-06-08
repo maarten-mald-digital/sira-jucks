@@ -8,9 +8,12 @@
 
 		<hr />
 
+		{{ project }}
+
 		<div v-if="project">
 			<div class="mb-3">
 				<label for="title" class="form-label">Project name</label>
+				hier: {{ title }}
 				<input
 					v-model="title"
 					type="text"
@@ -27,35 +30,42 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute();
-const projectId = Number(route.params.id);
-const title = defineModel();
-const project = ref<any>(null);
+// @TODO test
+// www.youtube.com/watch?v=tGhMaMIYRiI&ab_channel=NetNinja
+const config = useRuntimeConfig();
+// const title = defineModel();
+const title = ref<string>('title');
+// ref<string>(project.value?.title || '');
 
-await useAsyncGql({
-	operation: 'GetProject',
-	variables: { id: projectId },
-}).then((response) => {
-	project.value = response.data.value.project;
-	title.value = project.value.title;
+// const { id: projectId } = useRoute().params;
+
+// const { data: project } = await useAsyncData('project', () =>
+// 	$fetch(`/projects/${projectId}`, {
+// 		baseURL: config.public.apiBase,
+// 	})
+// );
+
+// const { data: project } = await useAsyncData('project', () =>
+// 	$fetch(`/projects/${projectId}`, {
+// 		baseURL: config.public.apiBase,
+
+// 		onResponse({ response }) {
+// 			// console.log(response._data.title);
+// 			// title.value = response._data.title;
+// 			console.log('kaas');
+// 			title.value = 'damian';
+// 		},
+// 	})
+// );
+
+const { data: project } = await useFetch(`/projects/${projectId}`, {
+	baseURL: config.public.apiBase,
+
+	onResponse({ response }) {
+		// console.log(response._data.title);
+		// title.value = response._data.title;
+		console.log('kaas');
+		title.value = 'damian';
+	},
 });
-
-async function updateProject() {
-	console.log('updateProject');
-
-	await GqlUpdateProject({
-		input: {
-			id: project.value.id,
-			title: title.value,
-		},
-	})
-		.then((response) => {
-			console.log('then()');
-			console.log(response);
-		})
-		.catch((error) => {
-			console.log('error()');
-			console.log(error);
-		});
-}
 </script>

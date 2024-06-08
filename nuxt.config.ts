@@ -1,17 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	// ssr: false,
+
 	devtools: { enabled: true },
 
 	css: ['~/assets/scss/app.scss'],
 
-	modules: ['nuxt-graphql-client'],
-
-	'graphql-client': {
-		clients: {
-			default: {
-				host: 'https://sira-jucks-api.test/graphql',
-				clientHost: 'https://sira-jucks-api.test/graphql',
-			},
+	runtimeConfig: {
+		// Public keys that are exposed to the client
+		public: {
+			apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
 		},
 	},
 });

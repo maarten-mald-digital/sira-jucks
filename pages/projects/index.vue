@@ -10,6 +10,10 @@
 
 		<hr />
 
+		<div v-if="error">
+			{{ error }}
+		</div>
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -51,23 +55,9 @@
 </template>
 
 <script lang="ts" setup>
-const projects = ref([]);
+const config = useRuntimeConfig();
 
-const { data, error } = await useAsyncGql({
-	operation: 'GetProjects',
+const { data: projects, error } = await useFetch('/projects', {
+	baseURL: config.public.apiBase,
 });
-
-if (error) {
-	console.log(error);
-}
-
-projects.value = data.value?.projects;
-
-async function deleteProject(project) {
-	console.log('deleteProject()');
-
-	const result = await GqlDeleteProject({
-		input: { id: project.id },
-	});
-}
 </script>
