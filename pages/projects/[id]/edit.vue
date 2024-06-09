@@ -8,12 +8,9 @@
 
 		<hr />
 
-		{{ project }}
-
 		<div v-if="project">
 			<div class="mb-3">
 				<label for="title" class="form-label">Project name</label>
-				hier: {{ title }}
 				<input
 					v-model="title"
 					type="text"
@@ -30,42 +27,16 @@
 </template>
 
 <script lang="ts" setup>
-// @TODO test
-// www.youtube.com/watch?v=tGhMaMIYRiI&ab_channel=NetNinja
-const config = useRuntimeConfig();
-// const title = defineModel();
+import Project from '~/models/Project';
+
+const { id: projectId } = useRoute().params;
 const title = ref<string>('title');
-// ref<string>(project.value?.title || '');
 
-// const { id: projectId } = useRoute().params;
+const project = useRepo(Project).find(projectId);
+title.value = project.title;
 
-// const { data: project } = await useAsyncData('project', () =>
-// 	$fetch(`/projects/${projectId}`, {
-// 		baseURL: config.public.apiBase,
-// 	})
-// );
-
-// const { data: project } = await useAsyncData('project', () =>
-// 	$fetch(`/projects/${projectId}`, {
-// 		baseURL: config.public.apiBase,
-
-// 		onResponse({ response }) {
-// 			// console.log(response._data.title);
-// 			// title.value = response._data.title;
-// 			console.log('kaas');
-// 			title.value = 'damian';
-// 		},
-// 	})
-// );
-
-const { data: project } = await useFetch(`/projects/${projectId}`, {
-	baseURL: config.public.apiBase,
-
-	onResponse({ response }) {
-		// console.log(response._data.title);
-		// title.value = response._data.title;
-		console.log('kaas');
-		title.value = 'damian';
-	},
-});
+function updateProject() {
+	console.log('updateProject()');
+	useRepo(Project).save({ id: 1, title: 'my test' });
+}
 </script>

@@ -6,6 +6,8 @@ export default defineNuxtConfig({
 
 	css: ['~/assets/scss/app.scss'],
 
+	modules: ['@pinia/nuxt', '@pinia-orm/nuxt'],
+
 	runtimeConfig: {
 		// Public keys that are exposed to the client
 		public: {

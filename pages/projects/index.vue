@@ -10,10 +10,6 @@
 
 		<hr />
 
-		<div v-if="error">
-			{{ error }}
-		</div>
-
 		<table class="table">
 			<thead>
 				<tr>
@@ -28,14 +24,14 @@
 					<td>{{ project.id }}</td>
 					<td>{{ project.title }}</td>
 					<td>
-						<NuxtLink
+						<!-- <NuxtLink
 							:to="{
 								name: 'projects-id-board',
 								params: { id: project.id },
 							}"
 						>
 							<button>view</button>
-						</NuxtLink>
+						</NuxtLink> -->
 						<NuxtLink
 							:to="{
 								name: 'projects-id-edit',
@@ -44,20 +40,16 @@
 						>
 							<button>Edit</button>
 						</NuxtLink>
-						<button @click="deleteProject(project)">Delete</button>
+						<!-- <button @click="deleteProject(project)">Delete</button> -->
 					</td>
 				</tr>
 			</tbody>
 		</table>
-
-		<hr />
 	</section>
 </template>
 
 <script lang="ts" setup>
-const config = useRuntimeConfig();
+import Project from '~/models/Project';
 
-const { data: projects, error } = await useFetch('/projects', {
-	baseURL: config.public.apiBase,
-});
+const projects = useRepo(Project).all();
 </script>
