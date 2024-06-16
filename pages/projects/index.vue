@@ -10,7 +10,7 @@
 
 		<hr />
 
-		<table class="table">
+		<!-- <table class="table">
 			<thead>
 				<tr>
 					<th scope="col">id</th>
@@ -24,14 +24,14 @@
 					<td>{{ project.id }}</td>
 					<td>{{ project.title }}</td>
 					<td>
-						<!-- <NuxtLink
+						<NuxtLink
 							:to="{
 								name: 'projects-id-board',
 								params: { id: project.id },
 							}"
 						>
 							<button>view</button>
-						</NuxtLink> -->
+						</NuxtLink>
 						<NuxtLink
 							:to="{
 								name: 'projects-id-edit',
@@ -40,16 +40,12 @@
 						>
 							<button>Edit</button>
 						</NuxtLink>
-						<!-- <button @click="deleteProject(project)">Delete</button> -->
+						<button @click="deleteProject(project)">Delete</button>
 					</td>
 				</tr>
 			</tbody>
-		</table>
+		</table> -->
 	</section>
 </template>
 
-<script lang="ts" setup>
-import Project from '~/models/Project';
-
-const projects = useRepo(Project).all();
-</script>
+<script lang="ts" setup></script>

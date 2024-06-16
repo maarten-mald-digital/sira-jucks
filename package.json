@@ -10,7 +10,7 @@
 		"postinstall": "nuxt prepare"
 	},
 	"dependencies": {
-		"@pinia-orm/nuxt": "^1.9.1",
+		"@pinia-orm/axios": "^1.9.1",
 		"@pinia/nuxt": "^0.5.1",
 		"bootstrap": "^5.3.3",
 		"nuxt": "^3.11.2",
