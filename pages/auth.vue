@@ -2,7 +2,7 @@
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col-md-12">
-				<button @click="fetchUser()">fetch user</button>
+				<button @click="showUser()">show user</button>
 			</div>
 
 			<div class="col-md-6">
@@ -64,6 +64,8 @@
 </template>
 
 <script setup>
+const authStore = useAuthStore();
+
 const registerFields = reactive({
 	name: null,
 	email: null,
@@ -75,93 +77,22 @@ const loginFields = reactive({
 	password: '123123',
 });
 
-const apiBaseUrl = `http://localhost:8000`;
-
-onMounted(async () => {
-	setCsrfToken();
-});
-
-async function setCsrfToken() {
-	console.log('set CsrfToken');
-
-	await $fetch(`${apiBaseUrl}/sanctum/csrf-cookie`, {
-		method: 'GET',
-		withCredentials: true,
-	});
+async function showUser() {
+	console.log('showUser()');
+	await authStore.fetchUser();
 }
 
 async function login() {
 	console.log('login');
-
-	setCsrfToken();
-
-	await $fetch(`${apiBaseUrl}/api/login`, {
-		method: 'POST',
-		credentials: 'include',
-		headers: {
-			'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-		},
-		body: {
-			email: loginFields.email,
-			password: loginFields.password,
-		},
-	})
-		.then((r) => {
-			console.log('then');
-			console.log(r);
-		})
-		.catch((e) => {
-			console.log('catch');
-			console.log(e);
-		});
-}
-
-async function fetchUser() {
-	console.log('fetchUser');
-
-	const user = await $fetch(`${apiBaseUrl}/api/user`, {
-		method: 'GET',
-		credentials: 'include',
-		headers: {
-			'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-		},
-	})
-		.then((r) => {
-			console.log('then');
-			console.log(r);
-		})
-		.catch((e) => {
-			console.log('catch');
-			console.log(e);
-		});
-
-	console.log(user);
+	await authStore.login(loginFields.email, loginFields.password);
 }
 
 async function register() {
 	console.log('register');
-
-	setCsrfToken();
-
-	await $fetch(`${apiBaseUrl}/api/register`, {
-		method: 'POST',
-		credentials: 'include',
-		headers: {
-			'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-		},
-		body: {
-			name: registerFields.name,
-			email: registerFields.email,
-			password: registerFields.password,
-		},
-	})
-		.then((r) => {
-			console.log('then');
-			console.log(r);
-		})
-		.catch((e) => {
-			console.log('catch');
-			console.log(e);
-		});
+	await authStore.register(
+		registerFields.name,
+		registerFields.email,
+		loginFields.password
+	);
 }
 </script>
