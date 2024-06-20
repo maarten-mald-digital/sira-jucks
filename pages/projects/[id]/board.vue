@@ -1,7 +1,8 @@
 <template>
 	<section>
 		<div class="container-fluid">
-			<div class="row">
+			<h1>board</h1>
+			<!-- <div class="row">
 				<div class="col-md-3">
 					<project-sidebar :project="project" />
 				</div>
@@ -74,40 +75,38 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</section>
 </template>
 
 <script lang="ts" setup>
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 
-const route = useRoute();
-const projectId = Number(route.params.id);
-const project = ref<any>(null);
+// const route = useRoute();
+// const projectId = Number(route.params.id);
+// const project = ref<any>(null);
 
-const lanes = ref<any>();
+// const lanes = ref<any>();
 
-await useAsyncGql({
-	operation: 'GetProject',
-	variables: { id: projectId },
-}).then((response) => {
-	project.value = response.data.value.project;
-
-	// lanes.value = project.value.sprints.map((sprint) => )
-});
+// await useAsyncGql({
+// 	operation: 'GetProject',
+// 	variables: { id: projectId },
+// }).then((response) => {
+// 	project.value = response.data.value.project;
+// });
 
 // Draggable test
-interface Task {
-	id: number;
-	title: string;
-}
+// interface Task {
+// 	id: number;
+// 	title: string;
+// }
 
-interface Lane {
-	id: number;
-	title: string;
-	tasks: Task[];
-}
+// interface Lane {
+// 	id: number;
+// 	title: string;
+// 	tasks: Task[];
+// }
 
 // const todoList = ref<Task[]>([
 // 	{ id: 1, title: 'Task 1' },

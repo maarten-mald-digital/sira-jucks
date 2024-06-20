@@ -4,5 +4,5 @@ export default defineNuxtConfig({
 
 	css: ['~/assets/scss/app.scss'],
 
-	modules: ['@pinia/nuxt'],
+	modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
 });

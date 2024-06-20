@@ -1,6 +1,7 @@
 <template>
 	<section>
-		<div class="row">
+		<h1>backlog</h1>
+		<!-- <div class="row">
 			<div class="col-md-3">
 				<project-sidebar :project="project" />
 			</div>
@@ -15,7 +16,6 @@
 				</div>
 
 				<div>
-					<!-- Sprints -->
 					<div
 						class="sprint mt-3"
 						v-for="sprint in sprints"
@@ -41,7 +41,6 @@
 						</draggable>
 					</div>
 
-					<!-- Backlog -->
 					<div class="backlog mt-5">
 						<h3>Backlog</h3>
 						<draggable
@@ -64,66 +63,66 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</section>
 </template>
 
 <script lang="ts" setup>
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 
-const route = useRoute();
-const projectId = Number(route.params.id);
-const project = ref<any>(null);
+// const route = useRoute();
+// const projectId = Number(route.params.id);
+// const project = ref<any>(null);
 
-const sprints = ref<any>();
-const backlog = ref<any>();
+// const sprints = ref<any>();
+// const backlog = ref<any>();
 
-await useAsyncGql({
-	operation: 'GetProject',
-	variables: { id: projectId },
-}).then((response) => {
-	project.value = response.data.value.project;
+// await useAsyncGql({
+// 	operation: 'GetProject',
+// 	variables: { id: projectId },
+// }).then((response) => {
+// 	project.value = response.data.value.project;
 
-	console.log(project.value);
+// 	console.log(project.value);
 
-	sprints.value = project.value.sprints.map((sprint) => ({
-		...sprint,
-		tasks: project.value.tasks.filter(
-			(task) => task.sprint_id === sprint.id
-		),
-	}));
+// 	sprints.value = project.value.sprints.map((sprint) => ({
+// 		...sprint,
+// 		tasks: project.value.tasks.filter(
+// 			(task) => task.sprint_id === sprint.id
+// 		),
+// 	}));
 
-	backlog.value = {
-		tasks: project.value.tasks.filter((task) => !task.sprint_id),
-	};
-});
+// 	backlog.value = {
+// 		tasks: project.value.tasks.filter((task) => !task.sprint_id),
+// 	};
+// });
 
-function onEnd(event: any) {
-	const taskId = event.item.dataset.taskId;
-	const sprintId = event.to.dataset.sprintId;
+// function onEnd(event: any) {
+// 	const taskId = event.item.dataset.taskId;
+// 	const sprintId = event.to.dataset.sprintId;
 
-	console.log(`taskId: ${taskId}`);
-	console.log(`sprintId: ${sprintId}`);
+// 	console.log(`taskId: ${taskId}`);
+// 	console.log(`sprintId: ${sprintId}`);
 
-	updateProjectTask(taskId, sprintId);
-}
+// 	updateProjectTask(taskId, sprintId);
+// }
 
-async function updateProjectTask(taskId: any, sprintId: any) {
-	console.log('updateProjectTask');
+// async function updateProjectTask(taskId: any, sprintId: any) {
+// 	console.log('updateProjectTask');
 
-	await GqlUpdateTask({
-		input: {
-			id: taskId,
-			sprint_id: sprintId,
-		},
-	})
-		.then((response) => {
-			console.log('then()');
-			console.log(response);
-		})
-		.catch((error) => {
-			console.log('error()');
-			console.log(error);
-		});
-}
+// 	await GqlUpdateTask({
+// 		input: {
+// 			id: taskId,
+// 			sprint_id: sprintId,
+// 		},
+// 	})
+// 		.then((response) => {
+// 			console.log('then()');
+// 			console.log(response);
+// 		})
+// 		.catch((error) => {
+// 			console.log('error()');
+// 			console.log(error);
+// 		});
+// }
 </script>

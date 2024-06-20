@@ -1,21 +1,13 @@
 nav {
 	gap: 30px;
 	display: flex;
-	flex-direction: column;
-
-	@include media-breakpoint-up(lg) {
-		flex-direction: row;
-		margin-top: 0;
-	}
+	flex-direction: row;
+	margin-top: 0;
 
 	.nav-link {
 		color: var(--white);
 		text-decoration: none;
-		font-size: 30px;
-
-		@include media-breakpoint-up(lg) {
-			font-size: 17px;
-		}
+		font-size: 17px;
 
 		&:hover,
 		&.active {
