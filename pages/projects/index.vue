@@ -10,7 +10,7 @@
 
 		<hr />
 
-		<!-- <table class="table">
+		<table class="table">
 			<thead>
 				<tr>
 					<th scope="col">id</th>
@@ -40,12 +40,27 @@
 						>
 							<button>Edit</button>
 						</NuxtLink>
-						<button @click="deleteProject(project)">Delete</button>
+						<button @click="deleteProject(project.id)">
+							Delete
+						</button>
 					</td>
 				</tr>
 			</tbody>
-		</table> -->
+		</table>
 	</section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const projectStore = useProjectStore();
+const projects = computed(() => projectStore.projects);
+
+onMounted(async () => {
+	console.log('projects mounted');
+	await projectStore.fetchProjects();
+});
+
+async function deleteProject(projectId: number) {
+	console.log('delete()');
+	await projectStore.deleteProject(projectId);
+}
+</script>

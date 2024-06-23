@@ -1,5 +1,6 @@
 <template>
 	<div>
-		<h1>Teams</h1>
+		<h1>Layout: auth</h1>
+		<slot />
 	</div>
 </template>

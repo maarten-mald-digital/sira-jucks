@@ -27,14 +27,12 @@
 </template>
 
 <script lang="ts" setup>
+const projectStore = useProjectStore();
 const projectTitle = defineModel('title', { default: '' });
 
 async function createProject() {
 	console.log('createProject()');
-
-	const result = await GqlCreateProject({
-		input: { title: projectTitle.value },
-	});
+	projectStore.createProject(projectTitle.value);
 
 	projectTitle.value = '';
 

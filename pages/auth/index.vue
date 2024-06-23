@@ -1,10 +1,6 @@
 <template>
 	<div class="container mt-5">
 		<div class="row">
-			<div class="col-md-12">
-				<button @click="showUser()">show user</button>
-			</div>
-
 			<div class="col-md-6">
 				<h1>Register</h1>
 
@@ -64,6 +60,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+	layout: 'auth',
+});
+
 const authStore = useAuthStore();
 
 const registerFields = reactive({
@@ -76,11 +76,6 @@ const loginFields = reactive({
 	email: 'm@m.nl',
 	password: '123123',
 });
-
-async function showUser() {
-	console.log('showUser()');
-	await authStore.fetchUser();
-}
 
 async function login() {
 	console.log('login');

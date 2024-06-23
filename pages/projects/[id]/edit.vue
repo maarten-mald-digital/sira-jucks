@@ -2,7 +2,7 @@
 	<section class="container-fluid">
 		<h1 class="my-3">Edit project</h1>
 
-		<!-- <div>
+		<div>
 			<NuxtLink to="/projects"><button>Return</button></NuxtLink>
 		</div>
 
@@ -19,24 +19,20 @@
 				/>
 			</div>
 
-			<button class="btn btn-primary" @click="updateProject()">
-				Save
-			</button>
-		</div> -->
+			<button class="btn btn-primary" @click="update()">Save</button>
+		</div>
 	</section>
 </template>
 
 <script lang="ts" setup>
-// import Project from '~/models/Project';
+const projectStore = useProjectStore();
+const { id: projectId } = useRoute().params;
+const project = projectStore.getProjectById(Number(projectId));
 
-// const { id: projectId } = useRoute().params;
-// const title = ref<string>('title');
+let title = ref<string>('title');
+title.value = project?.title;
 
-// const project = useRepo(Project).find(projectId);
-// title.value = project.title;
-
-// function updateProject() {
-// 	console.log('updateProject()');
-// 	useRepo(Project).save({ id: 1, title: 'my test' });
-// }
+function update() {
+	projectStore.updateProject({ title: title.value }, Number(projectId));
+}
 </script>
