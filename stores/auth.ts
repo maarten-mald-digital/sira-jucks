@@ -27,38 +27,28 @@ export const useAuthStore = defineStore('auth', {
 
 	actions: {
 		async fetchUser() {
-			console.log('fetchUser');
-
-			await $fetch(`${apiBaseUrl}/api/user`, {
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-				},
-			})
-				.then((response) => {
-					console.log('then');
-					console.log(response);
-
-					// console.log(user);
-
-					this.user = response;
-					this.isAuthenticated = true;
-				})
-				.catch((e) => {
-					console.log('fetchUser catch');
-					console.log(e);
+			try {
+				const user = await $fetch(`${apiBaseUrl}/api/user`, {
+					method: 'GET',
+					credentials: 'include',
+					headers: {
+						'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
+					},
 				});
+
+				this.user = user;
+				this.isAuthenticated = true;
+			} catch (error) {
+				console.log('fetchUser catch:', error);
+			}
 		},
 
 		async setCsrfCookie() {
-			// console.log('getCsrfToken()');
 			await $fetch(`${apiBaseUrl}/sanctum/csrf-cookie`, {
 				method: 'GET',
 				withCredentials: true,
 				credentials: 'include',
 			});
-			// console.log(useCookie('XSRF-TOKEN').value);
 		},
 
 		async logout() {
@@ -72,60 +62,51 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async login(email: string, password: string) {
-			// console.log('login()');
 			await this.setCsrfCookie();
 
-			await $fetch(`${apiBaseUrl}/api/login`, {
-				method: 'POST',
-				withCredentials: true,
-				credentials: 'include',
-				headers: {
-					'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-				},
-				body: {
-					email: email,
-					password: password,
-				},
-			})
-				.then((response) => {
-					// console.log('then');
-					// console.log(response);
-					this.fetchUser();
-
-					navigateTo('/projects');
-				})
-				.catch((e) => {
-					console.log('catch');
-					console.log(e);
+			try {
+				await $fetch(`${apiBaseUrl}/api/login`, {
+					method: 'POST',
+					withCredentials: true,
+					credentials: 'include',
+					headers: {
+						'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
+					},
+					body: {
+						email: email,
+						password: password,
+					},
 				});
+
+				await this.fetchUser();
+				await navigateTo('/projects');
+			} catch (error) {
+				console.log('loginUser catch:', error);
+			}
 		},
 
 		async register(name: string, email: string, password: string) {
-			console.log('register');
-
 			await this.setCsrfCookie();
 
-			await $fetch(`${apiBaseUrl}/api/register`, {
-				method: 'POST',
-				withCredentials: true,
-				credentials: 'include',
-				headers: {
-					'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-				},
-				body: {
-					name: name,
-					email: email,
-					password: password,
-				},
-			})
-				.then((r) => {
-					console.log('then');
-					console.log(r);
-				})
-				.catch((e) => {
-					console.log('catch');
-					console.log(e);
+			try {
+				await $fetch(`${apiBaseUrl}/api/register`, {
+					method: 'POST',
+					withCredentials: true,
+					credentials: 'include',
+					headers: {
+						'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
+					},
+					body: {
+						name: name,
+						email: email,
+						password: password,
+					},
 				});
+
+				await this.login(email, password);
+			} catch (error) {
+				console.log('register catch:', error);
+			}
 		},
 	},
 });
