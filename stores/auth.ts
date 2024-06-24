@@ -52,13 +52,25 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async logout() {
-			console.log('logout() - need to fix');
-			// await this.setCsrfCookie();
+			await this.setCsrfCookie();
 
-			this.user = {};
-			this.isAuthenticated = false;
+			try {
+				await $fetch(`${apiBaseUrl}/api/logout`, {
+					method: 'POST',
+					withCredentials: true,
+					credentials: 'include',
+					headers: {
+						'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
+					},
+				});
 
-			navigateTo('/auth');
+				this.user = {};
+				this.isAuthenticated = false;
+
+				await navigateTo('/auth');
+			} catch (error) {
+				console.log('logout catch:', error);
+			}
 		},
 
 		async login(email: string, password: string) {
