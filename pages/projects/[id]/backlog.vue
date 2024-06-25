@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<h1>backlog</h1>
-		<!-- <div class="row">
+		<div class="row">
 			<div class="col-md-3">
 				<project-sidebar :project="project" />
 			</div>
@@ -16,7 +15,8 @@
 				</div>
 
 				<div>
-					<div
+					<pre>{{ project }}</pre>
+					<!-- <div
 						class="sprint mt-3"
 						v-for="sprint in sprints"
 						:key="sprint.id"
@@ -39,9 +39,9 @@
 								</div>
 							</template>
 						</draggable>
-					</div>
+					</div> -->
 
-					<div class="backlog mt-5">
+					<!-- <div class="backlog mt-5">
 						<h3>Backlog</h3>
 						<draggable
 							v-model="backlog.tasks"
@@ -60,14 +60,21 @@
 								</div>
 							</template>
 						</draggable>
-					</div>
+					</div> -->
 				</div>
 			</div>
-		</div> -->
+		</div>
 	</section>
 </template>
 
 <script lang="ts" setup>
+const projectStore = useProjectStore();
+const { id: projectId } = useRoute().params;
+const project = projectStore.getProjectById(Number(projectId));
+
+const backlog = projectStore.getProjectBacklog;
+console.log(backlog);
+
 // import draggable from 'vuedraggable';
 
 // const route = useRoute();

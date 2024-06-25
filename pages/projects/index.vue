@@ -26,7 +26,7 @@
 					<td>
 						<NuxtLink
 							:to="{
-								name: 'projects-id-board',
+								name: 'projects-id-backlog',
 								params: { id: project.id },
 							}"
 						>

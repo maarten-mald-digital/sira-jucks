@@ -2,9 +2,37 @@ import { defineStore } from 'pinia';
 
 const apiBaseUrl = `http://api.sirajucks.test`;
 
+interface Task {
+	id: number;
+	project_id: number;
+	sprint_id: number;
+	lane_id: number;
+	title: string;
+	created_at: string | null;
+	updated_at: string | null;
+}
+interface Lane {
+	id: number;
+	project_id: number;
+	title: string;
+	created_at: string | null;
+	updated_at: string | null;
+}
+interface Sprint {
+	id: number;
+	project_id: number;
+	title: string;
+	starts_at: string | null;
+	ends_at: string | null;
+	created_at: string | null;
+	updated_at: string | null;
+}
 interface Project {
 	id: number;
 	title: string;
+	sprints: Sprint[];
+	lanes: Lane[];
+	tasks: Task[];
 	created_at: string | null;
 	updated_at: string | null;
 }
@@ -26,6 +54,10 @@ export const useProjectStore = defineStore('project', {
 		getProjectById: (state) => {
 			return (id: number) =>
 				state.projects.find((project) => project.id === id);
+		},
+
+		getProjectBacklog: (state) => {
+			return 'to do backlog';
 		},
 	},
 
