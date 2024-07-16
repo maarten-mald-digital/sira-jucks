@@ -129,7 +129,7 @@ export const useProjectStore = defineStore('project', {
 
 					await this.fetchProjects();
 
-					// navigateTo('/projects');
+					navigateTo('/projects');
 				})
 				.catch((e) => {
 					console.log('catch');

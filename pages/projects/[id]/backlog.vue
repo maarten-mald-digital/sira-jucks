@@ -15,8 +15,8 @@
 				</div>
 
 				<div>
-					<pre>{{ project }}</pre>
-					<!-- <div
+					<!-- Sprints -->
+					<div
 						class="sprint mt-3"
 						v-for="sprint in sprints"
 						:key="sprint.id"
@@ -39,9 +39,10 @@
 								</div>
 							</template>
 						</draggable>
-					</div> -->
+					</div>
 
-					<!-- <div class="backlog mt-5">
+					<!-- Backlog -->
+					<div class="backlog mt-5">
 						<h3>Backlog</h3>
 						<draggable
 							v-model="backlog.tasks"
@@ -60,7 +61,7 @@
 								</div>
 							</template>
 						</draggable>
-					</div> -->
+					</div>
 				</div>
 			</div>
 		</div>
@@ -68,68 +69,42 @@
 </template>
 
 <script lang="ts" setup>
-const projectStore = useProjectStore();
+import draggable from 'vuedraggable';
+
 const { id: projectId } = useRoute().params;
+
+const projectStore = useProjectStore();
+const taskStore = useTaskStore();
 const project = projectStore.getProjectById(Number(projectId));
 
-const backlog = projectStore.getProjectBacklog;
-console.log(backlog);
+const sprints = ref<any>();
+const backlog = ref<any>();
 
-// import draggable from 'vuedraggable';
+sprints.value = project.sprints.map((sprint) => ({
+	...sprint,
+	tasks: project.tasks.filter((task) => task.sprint_id === sprint.id),
+}));
 
-// const route = useRoute();
-// const projectId = Number(route.params.id);
-// const project = ref<any>(null);
+backlog.value = {
+	tasks: project.tasks.filter((task) => !task.sprint_id),
+};
 
-// const sprints = ref<any>();
-// const backlog = ref<any>();
+function onEnd(event: any) {
+	console.log('onEnd()');
 
-// await useAsyncGql({
-// 	operation: 'GetProject',
-// 	variables: { id: projectId },
-// }).then((response) => {
-// 	project.value = response.data.value.project;
+	const taskId = event.item.dataset.taskId;
+	const sprintId = event.to.dataset.sprintId;
 
-// 	console.log(project.value);
+	console.log(`taskId: ${taskId}`);
+	console.log(`sprintId: ${sprintId}`);
 
-// 	sprints.value = project.value.sprints.map((sprint) => ({
-// 		...sprint,
-// 		tasks: project.value.tasks.filter(
-// 			(task) => task.sprint_id === sprint.id
-// 		),
-// 	}));
+	updateProjectTask(taskId, sprintId);
+}
 
-// 	backlog.value = {
-// 		tasks: project.value.tasks.filter((task) => !task.sprint_id),
-// 	};
-// });
+function updateProjectTask(taskId: number, sprintId: number) {
+	console.log('updateProjectTask()');
 
-// function onEnd(event: any) {
-// 	const taskId = event.item.dataset.taskId;
-// 	const sprintId = event.to.dataset.sprintId;
-
-// 	console.log(`taskId: ${taskId}`);
-// 	console.log(`sprintId: ${sprintId}`);
-
-// 	updateProjectTask(taskId, sprintId);
-// }
-
-// async function updateProjectTask(taskId: any, sprintId: any) {
-// 	console.log('updateProjectTask');
-
-// 	await GqlUpdateTask({
-// 		input: {
-// 			id: taskId,
-// 			sprint_id: sprintId,
-// 		},
-// 	})
-// 		.then((response) => {
-// 			console.log('then()');
-// 			console.log(response);
-// 		})
-// 		.catch((error) => {
-// 			console.log('error()');
-// 			console.log(error);
-// 		});
-// }
+	// const task = project.tasks.find((task) => task.id === Number(taskId));
+	// task.sprint_id = sprintId ? Number(sprintId) : null;
+}
 </script>
