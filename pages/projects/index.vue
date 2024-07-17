@@ -10,6 +10,8 @@
 
 		<hr />
 
+		<!-- <pre>{{ projects }}</pre> -->
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -51,16 +53,18 @@
 </template>
 
 <script lang="ts" setup>
-const projectStore = useProjectStore();
-const projects = computed(() => projectStore.projects);
+import { ProjectRepository } from '@/repositories/ProjectRepository';
+
+const projects = computed(() => ProjectRepository.all());
 
 onMounted(async () => {
-	console.log('projects mounted');
-	await projectStore.fetchProjects();
+	await ProjectRepository.fetchAll();
 });
 
 async function deleteProject(projectId: number) {
 	console.log('delete()');
-	await projectStore.deleteProject(projectId);
+
+	await ProjectRepository.delete(projectId);
+	// await projectStore.deleteProject(projectId);
 }
 </script>

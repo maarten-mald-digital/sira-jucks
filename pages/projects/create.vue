@@ -12,7 +12,7 @@
 			<div class="mb-3">
 				<label for="title" class="form-label">Project name</label>
 				<input
-					v-model="projectTitle"
+					v-model="title"
 					type="text"
 					class="form-control"
 					id="title"
@@ -27,15 +27,12 @@
 </template>
 
 <script lang="ts" setup>
-const projectStore = useProjectStore();
-const projectTitle = defineModel('title', { default: '' });
+import { ProjectRepository } from '@/repositories/ProjectRepository';
+
+const title = defineModel('title', { default: '' });
 
 async function createProject() {
-	console.log('createProject()');
-	projectStore.createProject(projectTitle.value);
-
-	projectTitle.value = '';
-
+	ProjectRepository.create({ title: title.value });
 	return navigateTo('/projects');
 }
 </script>

@@ -25,14 +25,18 @@
 </template>
 
 <script lang="ts" setup>
-const projectStore = useProjectStore();
+import Project from '@/models/Project';
+import { ProjectRepository } from '@/repositories/ProjectRepository';
+
 const { id: projectId } = useRoute().params;
-const project = projectStore.getProjectById(Number(projectId));
+const project = computed(() => useRepo(Project).find(projectId));
 
 let title = ref<string>('title');
-title.value = project?.title;
+title.value = project.value?.title;
 
 function update() {
-	projectStore.updateProject({ title: title.value }, Number(projectId));
+	ProjectRepository.update(Number(projectId), { title: title.value });
+	return navigateTo('/projects');
 }
 </script>
+~/models/Project

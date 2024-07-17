@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@pinia-orm/axios": "^1.9.1",
+		"@pinia-orm/nuxt": "^1.9.2",
 		"@pinia/nuxt": "^0.5.1",
 		"bootstrap": "^5.3.3",
 		"nuxt": "^3.11.2",
