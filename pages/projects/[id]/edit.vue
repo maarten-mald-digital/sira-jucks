@@ -11,12 +11,7 @@
 		<div v-if="project">
 			<div class="mb-3">
 				<label for="title" class="form-label">Project name</label>
-				<input
-					v-model="title"
-					type="text"
-					class="form-control"
-					id="title"
-				/>
+				<input v-model="title" type="text" class="form-control" id="title" />
 			</div>
 
 			<button class="btn btn-primary" @click="update()">Save</button>
@@ -39,4 +34,3 @@ function update() {
 	return navigateTo('/projects');
 }
 </script>
-~/models/Project

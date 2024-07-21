@@ -20,7 +20,7 @@
 		"vuedraggable": "^4.1.0"
 	},
 	"devDependencies": {
-		"@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+		"@pinia-plugin-persistedstate/nuxt": "^1.2.1",
 		"sass": "^1.77.2"
 	}
 }

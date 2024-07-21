@@ -16,25 +16,18 @@
 
 				<div>
 					<!-- Sprints -->
-					<div
-						class="sprint mt-3"
-						v-for="sprint in sprints"
-						:key="sprint.id"
-					>
+					<div class="sprint mt-3" v-for="sprint in sprints" :key="sprint.id">
 						<h3>{{ sprint.title }}</h3>
 						<draggable
 							v-model="sprint.tasks"
 							group="tasks"
 							class="task-list"
-							@end="onEnd"
+							@end="taskMoved"
 							itemKey="id"
 							:data-sprint-id="sprint.id"
 						>
 							<template #item="{ element, index }">
-								<div
-									class="task-item"
-									:data-task-id="element.id"
-								>
+								<div class="task-item" :data-task-id="element.id">
 									{{ element.title }}
 								</div>
 							</template>
@@ -48,15 +41,12 @@
 							v-model="backlog.tasks"
 							group="tasks"
 							class="task-list"
-							@end="onEnd"
+							@end="taskMoved"
 							itemKey="id"
 							data-sprint-id=""
 						>
 							<template #item="{ element, index }">
-								<div
-									class="task-item"
-									:data-task-id="element.id"
-								>
+								<div class="task-item" :data-task-id="element.id">
 									{{ element.title }}
 								</div>
 							</template>
@@ -70,41 +60,39 @@
 
 <script lang="ts" setup>
 import draggable from 'vuedraggable';
+import Project from '@/models/Project';
+import { TaskRepository } from '@/repositories/TaskRepository';
 
 const { id: projectId } = useRoute().params;
+const project = computed(() => useRepo(Project).with('sprints').with('tasks').find(projectId));
 
-const projectStore = useProjectStore();
-const taskStore = useTaskStore();
-const project = projectStore.getProjectById(Number(projectId));
+console.log(project.value);
 
 const sprints = ref<any>();
 const backlog = ref<any>();
 
-sprints.value = project.sprints.map((sprint) => ({
+sprints.value = project.value.sprints.map((sprint) => ({
 	...sprint,
-	tasks: project.tasks.filter((task) => task.sprint_id === sprint.id),
+	tasks: project.value.tasks.filter((task) => task.sprint_id === sprint.id),
 }));
 
 backlog.value = {
-	tasks: project.tasks.filter((task) => !task.sprint_id),
+	tasks: project.value.tasks.filter((task) => !task.sprint_id),
 };
 
-function onEnd(event: any) {
+function taskMoved(event: any) {
 	console.log('onEnd()');
 
 	const taskId = event.item.dataset.taskId;
-	const sprintId = event.to.dataset.sprintId;
+	let sprintId = Number(event.to.dataset.sprintId);
 
 	console.log(`taskId: ${taskId}`);
 	console.log(`sprintId: ${sprintId}`);
 
-	updateProjectTask(taskId, sprintId);
-}
+	if (!sprintId) {
+		sprintId = null;
+	}
 
-function updateProjectTask(taskId: number, sprintId: number) {
-	console.log('updateProjectTask()');
-
-	// const task = project.tasks.find((task) => task.id === Number(taskId));
-	// task.sprint_id = sprintId ? Number(sprintId) : null;
+	TaskRepository.update(Number(taskId), { sprint_id: sprintId });
 }
 </script>

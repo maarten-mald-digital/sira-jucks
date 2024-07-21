@@ -58,6 +58,7 @@ import { ProjectRepository } from '@/repositories/ProjectRepository';
 const projects = computed(() => ProjectRepository.all());
 
 onMounted(async () => {
+	console.log('mounted call');
 	await ProjectRepository.fetchAll();
 });
 
