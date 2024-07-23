@@ -27,23 +27,25 @@ export class TaskRepository {
 	// 	return useRepo(Project).all();
 	// }
 
-	// static async create(data: object) {
-	// 	try {
-	// 		const response = await $fetch(`${apiBaseUrl}/api/projects`, {
-	// 			method: 'POST',
-	// 			withCredentials: true,
-	// 			credentials: 'include',
-	// 			headers: {
-	// 				'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-	// 			},
-	// 			body: data,
-	// 		});
+	static async create(data: object) {
+		console.log('create');
 
-	// 		useRepo(Project).save(response);
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// }
+		try {
+			const response = await $fetch(`${apiBaseUrl}/api/tasks`, {
+				method: 'POST',
+				withCredentials: true,
+				credentials: 'include',
+				headers: {
+					'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
+				},
+				body: data,
+			});
+
+			useRepo(Task).save(response);
+		} catch (e) {
+			console.log(e);
+		}
+	}
 
 	// static async update(id: number, data: object) {
 	static async update(id: null | number, data: Task) {

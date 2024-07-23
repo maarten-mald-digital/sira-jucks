@@ -5,6 +5,14 @@
 				<project-sidebar :project="project" />
 			</div>
 
+			<!-- <div class="col-md-9">
+				<pre>{{ project }}</pre>
+				<pre>{{ sprints }}</pre>
+				<pre>{{ backlog }}</pre>
+				<input type="text" v-model="taskTitle" />
+				<button @click="createTask()">New kaolo task</button>
+			</div> -->
+
 			<div class="col-md-9">
 				<div>
 					<h1 class="my-3">Backlog: {{ project.title }}</h1>
@@ -16,6 +24,7 @@
 
 				<div>
 					<!-- Sprints -->
+					<!-- <pre>{{ sprints }}</pre> -->
 					<div class="sprint mt-3" v-for="sprint in sprints" :key="sprint.id">
 						<h3>{{ sprint.title }}</h3>
 						<draggable
@@ -32,6 +41,14 @@
 								</div>
 							</template>
 						</draggable>
+
+						<!-- <div class="create-task">
+							<div>
+								<input type="text" v-model="taskTitle" />
+								<button @click="createTask(sprint.id)">New sprint task</button>
+							</div>
+						</div> -->
+						<project-create-task-bar :sprintId="sprint.id" />
 					</div>
 
 					<!-- Backlog -->
@@ -51,6 +68,8 @@
 								</div>
 							</template>
 						</draggable>
+
+						<project-create-task-bar />
 					</div>
 				</div>
 			</div>
@@ -66,19 +85,32 @@ import { TaskRepository } from '@/repositories/TaskRepository';
 const { id: projectId } = useRoute().params;
 const project = computed(() => useRepo(Project).with('sprints').with('tasks').find(projectId));
 
-console.log(project.value);
+const sprints = ref<any>({
+	id: null,
+	tasks: null,
+});
 
-const sprints = ref<any>();
-const backlog = ref<any>();
+const backlog = ref<any>({
+	tasks: null,
+});
 
-sprints.value = project.value.sprints.map((sprint) => ({
-	...sprint,
-	tasks: project.value.tasks.filter((task) => task.sprint_id === sprint.id),
-}));
+formatBacklog();
 
-backlog.value = {
-	tasks: project.value.tasks.filter((task) => !task.sprint_id),
-};
+watch(project, () => {
+	console.log('project changed');
+	formatBacklog();
+});
+
+function formatBacklog() {
+	sprints.value = project.value.sprints.map((sprint) => ({
+		...sprint,
+		tasks: project.value.tasks.filter((task) => task.sprint_id === sprint.id),
+	}));
+
+	backlog.value = {
+		tasks: project.value.tasks.filter((task) => !task.sprint_id),
+	};
+}
 
 function taskMoved(event: any) {
 	console.log('onEnd()');
@@ -95,4 +127,12 @@ function taskMoved(event: any) {
 
 	TaskRepository.update(Number(taskId), { sprint_id: sprintId });
 }
+
+// const taskTitle = defineModel('taskTitle', { default: '' });
+
+// function createTask(sprintId: number | null) {
+// 	console.log('createTask()');
+// 	console.log(taskTitle.value);
+// 	TaskRepository.create({ sprint_id: sprintId, title: taskTitle.value });
+// }
 </script>
