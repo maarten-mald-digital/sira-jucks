@@ -1,8 +1,26 @@
 <template>
 	<section>
-		<div class="container-fluid">
-			<h1>board</h1>
-			<!-- <div class="row">
+		<div class="row">
+			<div class="col-md-3">
+				<project-sidebar :project="project" />
+			</div>
+
+			<div class="col-md-9">
+				<div>
+					<h1 class="my-3">Bord</h1>
+					<NuxtLink :to="{ name: 'projects' }">
+						<button>Return</button>
+					</NuxtLink>
+					<hr />
+				</div>
+
+				<div class="boards kanban"></div>
+			</div>
+		</div>
+
+		<!-- <div class="container-fluid"> -->
+		<!-- <h1>board</h1> -->
+		<!-- <div class="row">
 				<div class="col-md-3">
 					<project-sidebar :project="project" />
 				</div>
@@ -76,11 +94,16 @@
 					</div>
 				</div>
 			</div> -->
-		</div>
+		<!-- </div> -->
 	</section>
 </template>
 
 <script lang="ts" setup>
+import Project from '@/models/Project';
+
+const { id: projectId } = useRoute().params;
+const project = computed(() => useRepo(Project).with('sprints').with('tasks').find(projectId));
+
 // import draggable from 'vuedraggable';
 
 // const route = useRoute();

@@ -26,7 +26,13 @@
 					<!-- Sprints -->
 					<!-- <pre>{{ sprints }}</pre> -->
 					<div class="sprint mt-3" v-for="sprint in sprints" :key="sprint.id">
-						<h3>{{ sprint.title }}</h3>
+						<div class="header">
+							<h3>{{ sprint.title }}</h3>
+							<div>
+								<button @click="deleteSprint(sprint.id)">Delete sprint</button>
+							</div>
+						</div>
+
 						<draggable
 							v-model="sprint.tasks"
 							group="tasks"
@@ -46,8 +52,14 @@
 					</div>
 
 					<!-- Backlog -->
-					<div class="backlog mt-5">
-						<h3>Backlog</h3>
+					<div class="backlog mt-5 bg-grey">
+						<div class="header">
+							<h3>Backlog</h3>
+							<div>
+								<button @click="createSprint()">Create sprint</button>
+							</div>
+						</div>
+
 						<draggable
 							v-model="backlog.tasks"
 							group="tasks"
@@ -74,7 +86,9 @@
 <script lang="ts" setup>
 import draggable from 'vuedraggable';
 import Project from '@/models/Project';
+// import Sprint from '@/models/Sprint';
 import { TaskRepository } from '@/repositories/TaskRepository';
+import { SprintRepository } from '@/repositories/SprintRepository';
 
 const { id: projectId } = useRoute().params;
 const project = computed(() => useRepo(Project).with('sprints').with('tasks').find(projectId));
@@ -120,5 +134,18 @@ function taskMoved(event: any) {
 	}
 
 	TaskRepository.update(Number(taskId), { sprint_id: sprintId });
+}
+
+function createSprint() {
+	const sprint = {
+		title: 'New sprint',
+		project_id: project.value.id,
+	};
+
+	SprintRepository.create(sprint);
+}
+
+function deleteSprint(sprintId: number) {
+	SprintRepository.delete(sprintId);
 }
 </script>
