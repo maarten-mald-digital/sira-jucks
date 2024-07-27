@@ -6,5 +6,10 @@ export default defineNuxtConfig({
 
 	ssr: false,
 
-	modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@pinia-orm/nuxt'],
+	modules: [
+		'@pinia/nuxt',
+		'@pinia-plugin-persistedstate/nuxt',
+		'@pinia-orm/nuxt',
+		'@vueuse/nuxt',
+	],
 });

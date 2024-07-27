@@ -42,12 +42,6 @@
 							</template>
 						</draggable>
 
-						<!-- <div class="create-task">
-							<div>
-								<input type="text" v-model="taskTitle" />
-								<button @click="createTask(sprint.id)">New sprint task</button>
-							</div>
-						</div> -->
 						<project-create-task-bar :sprintId="sprint.id" />
 					</div>
 
@@ -127,12 +121,4 @@ function taskMoved(event: any) {
 
 	TaskRepository.update(Number(taskId), { sprint_id: sprintId });
 }
-
-// const taskTitle = defineModel('taskTitle', { default: '' });
-
-// function createTask(sprintId: number | null) {
-// 	console.log('createTask()');
-// 	console.log(taskTitle.value);
-// 	TaskRepository.create({ sprint_id: sprintId, title: taskTitle.value });
-// }
 </script>
